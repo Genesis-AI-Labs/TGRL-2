@@ -36,64 +36,6 @@ Main issues:
 
 ### Suggested Next Steps
 
-1. **Choose More Complex Environment**:
-```python
-# Consider environments like:
-env = gym.make("LunarLander-v2")  # More complex dynamics
-# or
-env = gym.make("HalfCheetah-v4")  # Continuous action space
-```
-
-2. **Implement Dynamic Graph Updates**:
-```python
-def update_graph_during_training(transitions, current_graph, update_frequency=1000):
-    """Update graph structure and retrain GNN periodically during RL"""
-    # Add new nodes/edges from recent transitions
-    # Retrain GNN with updated value targets
-    # Update policy's feature extractor with new embeddings
-```
-
-3. **Better State Abstraction**:
-```python
-from sklearn.cluster import KMeans
-
-def cluster_based_discretization(states, n_clusters=100):
-    """Use clustering instead of uniform binning"""
-    kmeans = KMeans(n_clusters=n_clusters)
-    kmeans.fit(states)
-    return kmeans
-```
-
-4. **Multiple Training Objectives for GNN**:
-```python
-class EnhancedGNN(nn.Module):
-    def forward(self, data):
-        # Predict multiple quantities:
-        value_pred = self.value_head(x)
-        next_state_pred = self.dynamics_head(x)
-        reward_pred = self.reward_head(x)
-        return embeddings, value_pred, next_state_pred, reward_pred
-```
-
-5. **Attention-Based Edge Features**:
-```python
-from torch_geometric.nn import GATConv
-
-class GATValueNetwork(nn.Module):
-    def __init__(self):
-        self.conv1 = GATConv(in_channels, hidden_channels, edge_dim=2)  # Include action,reward
-```
-
-6. **Exploration-Specific Features**:
-```python
-def compute_node_visit_counts(transitions, node_ids):
-    """Track visit counts for exploration bonuses"""
-    visit_counts = defaultdict(int)
-    for _, node_id in enumerate(node_ids):
-        visit_counts[node_id] += 1
-    return visit_counts
-```
-
 The key is to:
 1. Move to a more challenging environment where graph structure could actually help
 2. Make the graph representation dynamic and updateable
